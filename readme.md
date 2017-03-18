@@ -1,7 +1,8 @@
 # .NET Core CLI tab autocomplete
+
 ### Work in progress
 
-[![Demo](https://github.com/beryldev/dotnet-core-bash-completion/blob/master/demo.gif?raw=true)]
+![Demo](https://github.com/beryldev/dotnet-core-bash-completion/blob/master/demo.gif?raw=true)
 
 ### Installation
 ```
