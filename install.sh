@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cp ./dotnet-add /etc/bash_completion.d/dotnet-add
+cp ./dotnet /etc/bash_completion.d/dotnet
