@@ -87,8 +87,14 @@ _dotnet_new()
 			return 0
 		;;
 
+		--framework)
+			opts="$(_get_frameworks ${prev2})"
+			COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
+			return 0
+		;;
+
 		*)
-			opts="--list --language --name --output --help"
+			opts="--list --language --name --output --help --framework"
 			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
 			return 0
 		;;
@@ -106,6 +112,19 @@ _get_languages()
 	fi
 
 	echo "C# F#"
+	return 0
+}
+
+_get_frameworks()
+{
+	local template
+	template=$1
+	if [[ "classlib" == ${template} ]] ; then
+		echo "netcoreapp1.0 netcoreapp1.1 netstandard1.0 netstandard1.1 netstandard1.2 netstandard1.3 netstandard1.4 netstandard1.5 netstandard1.6"
+		return 0
+	fi
+
+	echo "netcoreapp1.0 netcoreapp1.1"
 	return 0
 }
 
