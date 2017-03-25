@@ -74,6 +74,8 @@ _dotnet()
 
 _dotnet_new()
 {
+	local template="${COMP_WORDS[2]}"
+
 	case "${prev}" in 
 		new)
 			opts="console classlib mstest xunit web mvc webapi sln"
@@ -93,8 +95,34 @@ _dotnet_new()
 			return 0
 		;;
 
+		--output)
+			COMPREPLY=( $(compgen -d -- "${cur}") )
+			return 0
+		;;
+
+		--auth)
+			if [[ ${template} == mvc ]] ; then
+				opts="None Individual"
+				COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
+				return 0
+			fi
+		;;
+
+		--use-local-db)
+			if [[ ${template} == mvc ]] ; then
+				opts="true false"
+				COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
+				return 0
+			fi
+		;;
+
 		*)
-			opts="--list --language --name --output --help --framework"
+			if [[ ${template} == mvc ]] ; then
+				opts="--list --language --name --output --help --framework --auth --use-local-db"
+			else
+				opts="--list --language --name --output --help --framework"
+			fi
+
 			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
 			return 0
 		;;
@@ -130,56 +158,232 @@ _get_frameworks()
 
 _dotnet_restore()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		--packages)
+			COMPREPLY=( $(compgen -d  "${cur}") )
+			return 0
+		;;
+
+		--configfile)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --source --runtime --packages --disable-parallel --configfile --no-cache --ignore-failed-sources --no-dependencies --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_build()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		--output)
+			COMPREPLY=( $(compgen -d  "${cur}") )
+			return 0
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --output --framework --runtime --configuration --version-suffix --no-incremental --no-dependencies --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_publish()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		--output)
+			COMPREPLY=( $(compgen -d  "${cur}") )
+			return 0
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --framework --runtime --output --configuration --version-suffix --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_run()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		--project)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		*)
+			opts="--help --configuration --framework --project"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_test()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		--settings)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		--output)
+			COMPREPLY=( $(compgen -d  "${cur}") )
+			return 0
+		;;
+
+		--test-adapter-path)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		--diag)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --settings --list-tests --filter --test-adapter-path --logger --configuration --framework --output --diag --no-build --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_pack()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		--output)
+			COMPREPLY=( $(compgen -d  "${cur}") )
+			return 0
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --output --no-build --include-symbols --include-source --configuration --version-suffix --servicable --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_migrate()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		migrate)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		--xproj-file)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		--report-file)
+			COMPREPLY=( $(compgen -f "${cur}") )
+			return 0
+		;;
+
+		*)
+			opts="--help --template-file --sdk-package-version --xproj-file --skip-project-references --report-file --format-report-file-json --skip-backup"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_clean()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		clean)
+			if [[ ${cur} != -*]] ; then
+				COMPREPLY=( $(compgen -f "${cur}") )
+				return 0
+			else
+				opts="--help --output --framework --configuration --verbosity"
+				COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+				return 0
+			fi
+
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --output --framework --configuration --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 _dotnet_sln()
 {
-	#TODO
-	return 0;
+	case ${prev} in
+		sln)
+			if [[ ${cur} != -*]] ; then
+				COMPREPLY=( $(compgen -f "${cur}") )
+				return 0
+			else
+				opts="--help --output --framework --configuration --verbosity"
+				COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+				return 0
+			fi
+
+		;;
+
+		--verbosity)
+			opts="quiet minimal normal detailed diagnostic"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+
+		*)
+			opts="--help --output --framework --configuration --verbosity"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
 }
 
 
@@ -231,4 +435,4 @@ _dotnet_list()
 	fi
 }
 
-complete -F _dotnet dotnet
+complete -o nospace -F _dotnet dotnet
