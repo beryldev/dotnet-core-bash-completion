@@ -365,7 +365,7 @@ _dotnet_sln()
 				COMPREPLY=( $(compgen -f "${cur}") )
 				return 0
 			else
-				opts="--help --output --framework --configuration --verbosity"
+				opts="--help"
 				COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
 				return 0
 			fi
