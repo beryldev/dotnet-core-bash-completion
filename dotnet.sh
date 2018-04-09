@@ -332,7 +332,8 @@ _dotnet_clean()
 {
 	case ${prev} in
 		clean)
-			if [[ ${cur} != -*]] ; then
+			if [[ ${cur} != -* ]]
+            then
 				COMPREPLY=( $(compgen -f "${cur}") )
 				return 0
 			else
@@ -361,7 +362,8 @@ _dotnet_sln()
 {
 	case ${prev} in
 		sln)
-			if [[ ${cur} != -*]] ; then
+			if [[ ${cur} != -* ]] 
+            then
 				COMPREPLY=( $(compgen -f "${cur}") )
 				return 0
 			else
